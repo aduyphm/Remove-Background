@@ -1,8 +1,6 @@
 import socket
 import json
 import os
-from InstanceSegmentation import run
-from RemoveBackground import inference
 
 HOST = 'localhost'  # Standard loopback interface address (localhost)
 PORT = 10500        # Port to listen on (non-privileged ports are > 1023)
@@ -25,9 +23,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             exit()
         if act == 'detect':
             # Gọi function instance segmentation
+            from InstanceSegmentation import run
             msg = run.geturl(url)
         elif act == 'remove-bg':
             # Gọi function remove background
+            from RemoveBackground import inference
             msg = inference.geturl(url)
         else: 
             # Thông báo lỗi
