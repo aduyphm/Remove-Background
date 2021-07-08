@@ -18,11 +18,8 @@ from InstanceSegmentation.mrcnn import visualize
 sys.path.append(os.path.join(ROOT_DIR, "InstanceSegmentation/samples/coco/"))  # To find local version
 import coco
 
-#%matplotlib inline 
-
 # Directory to save logs and trained model
 MODEL_DIR = os.path.join(ROOT_DIR, "InstanceSegmentation/logs")
-#mask_rcnn_coco
 # Local path to trained weights file
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "pretrained/mask_rcnn_coco.h5")
 # Download COCO trained weights from Releases if needed
@@ -66,19 +63,10 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
                'teddy bear', 'hair drier', 'toothbrush']
 
-# Load a random image from the images folder
-# img_name = 'boy.jpg'
-# img_name = os.path.join(IMAGE_DIR, img_name)
-# image = skimage.io.imread(file_names)
-
-
-# visualize.display_blurred(image, r['rois'], r['masks'], r['class_ids'],
-#                             class_names, keys=None, outname=img_name)
-
 def geturl(img_name):
     image = skimage.io.imread(img_name)
     name = img_name.split('/')[-1]
-    print(name)
+
     # Run detection
     results = model.detect([image], verbose=1)
 
@@ -87,6 +75,6 @@ def geturl(img_name):
     visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
                                 class_names, r['scores'], outname=name)
     return {
-        'url': os.path.join('segmentation', name)
-        }
-
+        'url': os.path.join('segmentation', name),
+        'bboxes': r['rois'].tolist()
+    }

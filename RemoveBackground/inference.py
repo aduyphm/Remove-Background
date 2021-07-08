@@ -1,18 +1,17 @@
-import os
+import os, shutil
 import sys
 import argparse
 import numpy as np
 from PIL import Image, ExifTags
 import cv2
 import timeit
-from numpy.core.fromnumeric import compress
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as transforms
 
-from src.models.modnet import MODNet
+from RemoveBackground.src.models.modnet import MODNet
 
 def combined_display(image, matte):
     # calculate display resolution
@@ -72,6 +71,17 @@ def geturl(im_names):
         print('Cannot find input path: {0}'.format(im_names))
         exit()
 
+    output_folder = './RemoveBackground/output'
+    for filename in os.listdir(output_folder):
+        file_path = os.path.join(output_folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
     ref_size = 512
 
     # define image to tensor transform
@@ -82,7 +92,6 @@ def geturl(im_names):
         ]
     )
 
-    output_path = 'output'
     pretrained_ckpt = './pretrained/modnet_photographic_portrait_matting.ckpt'
     # create MODNet and load the pre-trained ckpt
     modnet = MODNet(backbone_pretrained=False)
@@ -185,8 +194,6 @@ def geturl(im_names):
     frontImage = frontImage.convert("RGBA")
     
     # Save this image
-    stop = timeit.default_timer()
-
     frontImage.save(os.path.join(res_folder, name +'.png'), compress_level=1)
     # print('It takes {} seconds'.format(stop - start))
     return {
