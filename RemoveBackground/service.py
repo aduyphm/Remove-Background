@@ -5,7 +5,7 @@ import os, sys
 import zipfile
 
 HOST = 'localhost'  # Standard loopback interface address (localhost)
-PORT = 10500        # Port to listen on (non-privileged ports are > 1023)
+PORT = 10600        # Port to listen on (non-privileged ports are > 1023)
 SIZE = 1024
 FORMAT = "utf-8"
 zip_name = "main.zip"
