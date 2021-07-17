@@ -4,7 +4,7 @@ import os, sys
 import time
 
 HOST = 'localhost'  # The server's hostname or IP address
-PORT = 10400        # The port used by the server
+PORT = 10500        # The port used by the server
 FORMAT = "utf-8"
 SIZE = 1024
 zip_name = 'main.zip'
@@ -18,8 +18,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         f.write(image_name)
         print(f'[SENDING] Image is being sent.')
 
-    s.send(image_name.encode())
-    s.send(zip_name.encode())
+    s.send(image_name.encode(FORMAT))
+    s.send(zip_name.encode(FORMAT))
 
     file = open(zip_name, 'rb')
     l = file.read()
