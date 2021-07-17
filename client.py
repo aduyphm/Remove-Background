@@ -4,7 +4,7 @@ import os, sys
 import time
 
 HOST = 'localhost'  # The server's hostname or IP address
-PORT = 10500        # The port used by the server
+PORT = 10400        # The port used by the server
 FORMAT = "utf-8"
 SIZE = 1024
 zip_name = 'main.zip'
