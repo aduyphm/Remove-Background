@@ -46,8 +46,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         f.write(msg['url'])
         print(f'[SENDING] Result is being sent.')
 
-    conn.sendall(data_string.encode())
-    conn.send(zip_name.encode()) 
+    conn.sendall(data_string.encode(FORMAT))
+    conn.send(zip_name.encode(FORMAT)) 
 
     file = open(zip_name, 'rb')
     l = file.read()
