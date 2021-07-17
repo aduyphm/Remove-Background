@@ -19,8 +19,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     conn, addr = s.accept()
     print(f"[NEW CONNECTION] {addr} connected.")
 
-    imagename = conn.recv(SIZE).decode()
-    filename = conn.recv(SIZE).decode()
+    imagename = conn.recv(SIZE).decode(FORMAT)
+    filename = conn.recv(SIZE).decode(FORMAT)
     print(f"[RECEIVING] Receiving the filename.")
     file = open(filename, "wb")
     l = conn.recv(SIZE)
