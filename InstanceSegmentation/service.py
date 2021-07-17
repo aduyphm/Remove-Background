@@ -47,7 +47,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(f'[SENDING] Result is being sent.')
 
     conn.sendall(data_string.encode())
-    conn.send(zip_name.encode()) # Error here
+    conn.send(zip_name.encode()) 
 
     file = open(zip_name, 'rb')
     l = file.read()
