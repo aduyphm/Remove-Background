@@ -28,8 +28,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     file.close()
     os.remove(zip_name)
 
-    imgname = s.recv(SIZE).decode()
-    filename = s.recv(SIZE).decode()
+    imgname = s.recv(SIZE).decode(FORMAT)
+    filename = s.recv(SIZE).decode(FORMAT)
     print(f"[RECEIVING] Receiving the filename.")
     file = open(filename, "wb")
     l = s.recv(SIZE)
