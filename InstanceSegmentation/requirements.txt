@@ -1,0 +1,13 @@
+python 3.6
+tensorflow==1.15.2
+keras==2.1.6
+numpy
+scipy
+Pillow
+cython
+matplotlib
+scikit-image
+opencv-python
+h5py
+imgaug
+IPython[all]
