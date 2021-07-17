@@ -23,7 +23,7 @@ import keras.layers as KL
 import keras.engine as KE
 import keras.models as KM
 
-from InstanceSegmentation.mrcnn import utils
+from mrcnn import utils
 
 # Requires TensorFlow 1.3+ and Keras 2.0.8+.
 from distutils.version import LooseVersion
@@ -252,7 +252,7 @@ def clip_boxes_graph(boxes, window):
     return clipped
 
 
-class ProposalLayer(KE.Layer):
+class ProposalLayer(KE.Layer): 
     """Receives anchor scores and selects a subset to pass as proposals
     to the second stage. Filtering is done based on anchor scores and
     non-max suppression to remove overlaps. It also applies bounding

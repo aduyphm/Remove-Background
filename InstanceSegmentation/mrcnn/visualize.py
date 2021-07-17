@@ -171,7 +171,7 @@ def display_instances(image, boxes, masks, class_ids, class_names,
     # if auto_show:
     #     plt.show()
     
-    plt.savefig(os.path.join('segmentation', outname), bbox_inches='tight', pad_inches=0)
+    plt.savefig(os.path.join('result', outname), bbox_inches='tight', pad_inches=0)
 
 
 def display_differences(image,

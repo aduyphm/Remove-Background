@@ -11,15 +11,15 @@ import matplotlib.pyplot as plt
 ROOT_DIR = os.getcwd()
 # Import Mask RCNN
 sys.path.append(ROOT_DIR)  # To find local version of the library
-from InstanceSegmentation.mrcnn import utils
-import InstanceSegmentation.mrcnn.model as modellib
-from InstanceSegmentation.mrcnn import visualize
+from mrcnn import utils
+import mrcnn.model as modellib
+from mrcnn import visualize
 # Import COCO config
-sys.path.append(os.path.join(ROOT_DIR, "InstanceSegmentation/samples/coco/"))  # To find local version
+sys.path.append(os.path.join(ROOT_DIR, "samples/coco/"))  # To find local version
 import coco
 
 # Directory to save logs and trained model
-MODEL_DIR = os.path.join(ROOT_DIR, "InstanceSegmentation/logs")
+MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 # Local path to trained weights file
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "pretrained/mask_rcnn_coco.h5")
 # Download COCO trained weights from Releases if needed
@@ -74,7 +74,10 @@ def geturl(img_name):
     r = results[0]
     visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
                                 class_names, r['scores'], outname=name)
+
+    os.remove(img_name)
+    
     return {
-        'url': os.path.join('segmentation', name),
+        'url': f'result/{name}',
         'bboxes': r['rois'].tolist()
     }

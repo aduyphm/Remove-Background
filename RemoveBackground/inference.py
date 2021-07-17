@@ -11,7 +11,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as transforms
 
-from RemoveBackground.src.models.modnet import MODNet
+from src.models.modnet import MODNet
 
 def combined_display(image, matte):
     # calculate display resolution
@@ -71,7 +71,7 @@ def geturl(im_names):
         print('Cannot find input path: {0}'.format(im_names))
         exit()
 
-    output_folder = './RemoveBackground/output'
+    output_folder = 'output'
     for filename in os.listdir(output_folder):
         file_path = os.path.join(output_folder, filename)
         try:
@@ -173,7 +173,7 @@ def geturl(im_names):
     name_image = matte_name.split('/')[-1]
     name = name_image.split('.')[0]
     res_folder = 'final_results'
-    output_folder = 'RemoveBackground/output'
+    output_folder = 'output'
     output_save_matte = os.path.join(output_folder, name_image)
     Image.fromarray(matte, mode='L').save(output_save_matte, compress_level=1)
     matte = Image.open(output_save_matte)
