@@ -32,6 +32,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         if not data: break 
         f.write(data)
         has_receive += len(data)
+        remain_receive -= len(data)
     f.close()
     print('[RECEIVE] Receive image successfully.')
 
