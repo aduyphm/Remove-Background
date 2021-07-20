@@ -3,12 +3,13 @@ import socket
 import json
 import os, sys
 import zipfile
+import time
 
 HOST = 'localhost'  # Standard loopback interface address (localhost)
 PORT = 10600        # Port to listen on (non-privileged ports are > 1023)
 SIZE = 1024
-FORMAT = "utf-8"
-zip_name = "main.zip"
+FORMAT = 'utf-8'
+DISCONNECT_MESSAGE = '!DISCONNECT'
 
 print("[STARTING] Server is starting.")
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -19,41 +20,39 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     conn, addr = s.accept()
     print(f"[NEW CONNECTION] {addr} connected.")
 
-    imagename = conn.recv(SIZE).decode(FORMAT)
-    filename = conn.recv(SIZE).decode(FORMAT)
-    print(f"[RECEIVING] Receiving the filename.")
-    file = open(filename, "wb")
-    l = conn.recv(SIZE)
-    
-    while l:
-        file.write(l)
-        l = conn.recv(SIZE)
-    
-    file.close()
+    data = conn.recv(SIZE).decode(FORMAT, errors='ignore')
+    image_path, image_size, _ = str(data).split('|') 
+    image_size = int(image_size)
 
-    with zipfile.ZipFile(filename, 'r') as f:
-        print(f"[EXTRACTING] Extracting all file in zip.")
-        f.extractall()
-    os.remove(filename)
+    f = open(image_path, 'wb')
+    has_receive = 0
+    remain_receive = image_size
+    while has_receive < image_size:
+        data = conn.recv(remain_receive)
+        if not data: break 
+        f.write(data)
+        has_receive += len(data)
+    f.close()
+    print('[RECEIVE] Receive image successfully.')
 
-    if not os.path.exists(imagename):
-        print('Cannot find input path: {0}'.format(imagename))
+    if not os.path.exists(image_path):
+        print('Cannot find input path: {}'.format(image_path))
         exit()
 
-    msg = geturl(imagename)
-    data_string = json.dumps(msg)
-    with zipfile.ZipFile(zip_name, 'w') as f:
-        f.write(msg['url'])
-        print(f'[SENDING] Result is being sent.')
+    msg = geturl(image_path)
+    result_path = msg['url']
+    result_size = os.stat(result_path).st_size
 
-    conn.sendall(data_string.encode())
-    conn.send(zip_name.encode()) # Error here
+    result_info = f'{result_path}|{result_size}|'
+    conn.send(result_info.encode(FORMAT))
 
-    file = open(zip_name, 'rb')
-    l = file.read()
-    conn.sendall(l)
+    f = open(result_path, 'rb')
+    has_sent = 0
+    while has_sent < result_size:
+        file = f.read(SIZE)
+        conn.sendall(file)
+        has_sent += len(file)
+    f.close()
+    print('[SEND] Send result successfully.')
 
-    file.close()
-    os.remove(zip_name)
-
-    conn.close()
+    os.remove(image_path)

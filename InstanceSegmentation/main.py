@@ -23,8 +23,8 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 # Local path to trained weights file
 COCO_MODEL_PATH = os.path.join(ROOT_DIR, "pretrained/mask_rcnn_coco.h5")
 # Download COCO trained weights from Releases if needed
-if not os.path.exists(COCO_MODEL_PATH):
-    utils.download_trained_weights(COCO_MODEL_PATH)
+# if not os.path.exists(COCO_MODEL_PATH):
+#     utils.download_trained_weights(COCO_MODEL_PATH)
 
 # Directory of images to run detection on
 IMAGE_DIR = os.path.join(ROOT_DIR, "images")
@@ -74,10 +74,8 @@ def geturl(img_name):
     r = results[0]
     visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
                                 class_names, r['scores'], outname=name)
-
-    os.remove(img_name)
     
     return {
-        'url': f'result/{name}',
+        'url': f'final_results/{name}',
         'bboxes': r['rois'].tolist()
     }
