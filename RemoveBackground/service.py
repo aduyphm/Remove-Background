@@ -6,7 +6,7 @@ import zipfile
 import time
 
 HOST = 'localhost'  # Standard loopback interface address (localhost)
-PORT = 10600        # Port to listen on (non-privileged ports are > 1023)
+PORT = 10500        # Port to listen on (non-privileged ports are > 1023)
 SIZE = 1024
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!DISCONNECT'
@@ -21,7 +21,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print(f"[NEW CONNECTION] {addr} connected.")
 
     data = conn.recv(SIZE).decode(FORMAT, errors='ignore')
-    image_path, image_size, _ = str(data).split('|') 
+    splitdata = []
+    splitdata = str(data).split('|') 
+    image_path = splitdata[0]
+    image_size = splitdata[1]
     image_size = int(image_size)
 
     f = open(image_path, 'wb')
