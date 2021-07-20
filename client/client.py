@@ -31,10 +31,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     f = open(result_path, 'wb')
     has_receive = 0
+    remain_receive = result_size
     while has_receive < result_size:
-        data = s.recv(result_size)
+        data = s.recv(remain_receive)
         if not data: break 
         f.write(data)
         has_receive += len(data)
+        remain_receive -= len(data)
     f.close()
     print('[RECEIVE] Receive result successfully.')
