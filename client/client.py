@@ -26,7 +26,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print('[SEND] Upload successfully.')
     
     data = s.recv(SIZE)
-    result_path, result_size, _ = str(data, FORMAT).split('|') 
+    splitdata = []
+    splitdata = str(data, FORMAT).split('|') 
+    result_path = splitdata[0]
+    result_size = splitdata[1]
     result_size = int(result_size)
 
     f = open(result_path, 'wb')
