@@ -1,36 +1,34 @@
 import socket, json
 import zipfile
 import os, sys
-import time
 
 HOST = 'localhost'  # The server's hostname or IP address
 PORT = 10500        # The port used by the server
 FORMAT = 'utf-8'
 SIZE = 1024
 DISCONNECT_MESSAGE = '!DISCONNECT'
-image_path = 'boy.jpg'
+image_path = 'people.jpg'
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
     image_size = os.stat(image_path).st_size
     image_info = f'{image_path}|{image_size}|'
     s.send(image_info.encode(encoding=FORMAT, errors='ignore'))
+    answer = s.recv(SIZE).decode(FORMAT)
 
-    f = open(image_path, 'rb')
-    has_sent = 0    # records the number of bytes already sent
-    while has_sent < image_size:
-        file = f.read()
-        s.sendall(file)
-        has_sent += len(file)
-    f.close()
-    print('[SEND] Upload successfully.')
+    if answer == "GOT SIZE":
+        with open(image_path, 'rb') as f:
+            l = f.read()
+            s.send(l)
+        print('[SEND] Upload successfully.')
+    else:
+        s.close()
     
     data = s.recv(SIZE)
-    splitdata = []
-    splitdata = str(data, FORMAT).split('|') 
-    result_path = splitdata[0]
-    result_size = splitdata[1]
+    result_path, result_size, _ = str(data, FORMAT).split('|') 
     result_size = int(result_size)
+
+    s.send("GOT SIZE".encode(FORMAT))
 
     f = open(result_path, 'wb')
     has_receive = 0
