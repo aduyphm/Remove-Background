@@ -59,12 +59,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             l = f.read()
             conn.send(l)
         print('[SEND] Send result successfully.')
-    # has_sent = 0
-    # while has_sent < result_size:
-    #     file = f.read(SIZE)
-    #     conn.sendall(file)
-    #     has_sent += len(file)
-    # f.close()
-    # print('[SEND] Send result successfully.')
 
     os.remove(image_path)
