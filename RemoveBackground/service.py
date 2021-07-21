@@ -27,6 +27,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     image_size = splitdata[1]
     image_size = int(image_size)
 
+    conn.send("GOT SIZE".encode(FORMAT))
+
     f = open(image_path, 'wb')
     has_receive = 0
     remain_receive = image_size
@@ -49,14 +51,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     result_info = f'{result_path}|{result_size}|'
     conn.send(result_info.encode(FORMAT))
+    answer = conn.recv(SIZE).decode(FORMAT)
 
-    f = open(result_path, 'rb')
-    has_sent = 0
-    while has_sent < result_size:
-        file = f.read(SIZE)
-        conn.sendall(file)
-        has_sent += len(file)
-    f.close()
-    print('[SEND] Send result successfully.')
+    # f = open(result_path, 'rb')
+    if answer == "GOT SIZE":
+        with open(result_path, 'rb') as f:
+            l = f.read()
+            conn.send(l)
+        print('[SEND] Send result successfully.')
+    # has_sent = 0
+    # while has_sent < result_size:
+    #     file = f.read(SIZE)
+    #     conn.sendall(file)
+    #     has_sent += len(file)
+    # f.close()
+    # print('[SEND] Send result successfully.')
 
     os.remove(image_path)
