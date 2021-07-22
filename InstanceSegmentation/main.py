@@ -72,8 +72,7 @@ def geturl(img_name):
 
     # Visualize results
     r = results[0]
-    visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
-                                class_names, r['scores'], outname=name)
+    visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'], outname=name)
     
     return {
         'url': f'final_results/{name}',
