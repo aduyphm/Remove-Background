@@ -53,10 +53,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     result_info = f'{result_path}|{result_size}|'
     conn.send(result_info.encode(FORMAT))
     answer = conn.recv(SIZE).decode(FORMAT)
-
-    with open(result_path, 'rb') as f:
-        l = f.read()
-        conn.send(l)
-    print('[SEND] Send result successfully.')
-
+    
+    if answer == "GOT SIZE":
+        with open(result_path, 'rb') as f:
+            l = f.read()
+            conn.send(l)
+        print('[SEND] Send result successfully.')
+  
     os.remove(image_path)
