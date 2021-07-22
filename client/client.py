@@ -7,7 +7,7 @@ PORT = 10500        # The port used by the server
 FORMAT = 'utf-8'
 SIZE = 1024
 DISCONNECT_MESSAGE = '!DISCONNECT'
-image_path = 'people.jpg'
+image_path = 'boy.jpg'
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
