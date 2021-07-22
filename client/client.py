@@ -25,7 +25,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.close()
     
     data = s.recv(SIZE)
-    result_path, result_size, _ = str(data, FORMAT).split('|') 
+    splitdata = []
+    splitdata = str(data, FORMAT).split('|')
+    result_path = splitdata[0]
+    result_size = splitdata[1]
     result_size = int(result_size)
 
     s.send("GOT SIZE".encode(FORMAT))
