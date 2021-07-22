@@ -24,9 +24,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     else:
         s.close()
     
-    data = s.recv(SIZE)
+    data = s.recv(SIZE).decode(FORMAT)
     splitdata = []
-    splitdata = str(data, FORMAT).split('|')
+    splitdata = str(data).split('|')
     result_path = splitdata[0]
     result_size = splitdata[1]
     result_size = int(result_size)
