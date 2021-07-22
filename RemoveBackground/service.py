@@ -6,7 +6,7 @@ import zipfile
 import time
 
 HOST = 'localhost'  # Standard loopback interface address (localhost)
-PORT = 10500        # Port to listen on (non-privileged ports are > 1023)
+PORT = 10600        # Port to listen on (non-privileged ports are > 1023)
 SIZE = 1024
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!DISCONNECT'
